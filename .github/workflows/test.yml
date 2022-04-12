@@ -8,36 +8,11 @@ on:
   pull_request:
 
 jobs:
-  test-node:
-    runs-on: ubuntu-18.04
-
-    steps:
-      - uses: actions/checkout@v2.1.1
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install -y mesa-utils xvfb libgl1-mesa-dri libglapi-mesa libosmesa6
-          yarn bootstrap
-
-      - name: Run tests
-        run: |
-          xvfb-run -s "-ac -screen 0 1280x1024x16" yarn test ci
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
   test-python:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
@@ -59,3 +34,26 @@ jobs:
         run: |
           cd bindings/pydeck
           make test
+
+  armv64_job:
+    name: Build and Test for arm64
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+      - name: Install and Run tests
+        run: |
+           docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+             arm64v8/ubuntu:20.04 \
+              bash -exc 'apt-get update && apt-get -y install git python3 python3-pip && apt-get install -y language-pack-en && export LC_CTYPE=en_US.UTF-8 && apt-get -y install locales && \
+              python3 -m pip install --upgrade pip && \
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.1/install.sh | bash && \
+              nvm install 12.12.0 && nvm use 12.12.0 && \
+              cd bindings/pydeck && \
+              make setup-env && \
+              make init && \
+              cd bindings/pydeck && \
+              make test && \
+              deactivate'
