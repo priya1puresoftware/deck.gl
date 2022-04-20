@@ -1,0 +1,18 @@
+language: python
+matrix:
+    include:
+        - python: '3.8'
+        - python: 3.8
+          arch: arm64
+sudo: false
+# running in the container-based infrastructure without access to sudo
+before_install:
+      - cd bindings/pydeck
+install:
+      - pip install -r requirements-dev.txt
+      - nvm install 10.16.0
+      - nvm use 10.16.0
+      - pip install -e . --install-option "--build_all"
+      - pip install -e . --install-option "--build_all" --verbose
+script:
+    - pytest --cov=pydeck
