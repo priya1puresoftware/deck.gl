@@ -53,7 +53,7 @@ jobs:
              pytest --cov=pydeck
 workflows:
   version: 2
-  python3.8:
+  python3.7:
     jobs:
       
       - build-medium-amd64
