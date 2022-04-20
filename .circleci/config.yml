@@ -15,6 +15,7 @@ jobs:
           name: ️️🏗️ pip dev requirements
           command: |
              uname -m 
+              pip install --upgrade pip
               cd bindings/pydeck/requirements
               pip install -r requirements-dev.txt
               curl https://raw.github.com/creationix/nvm/master/install.sh | sh
