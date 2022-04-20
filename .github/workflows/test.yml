@@ -24,16 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.1/install.sh | bash
-          nvm install 12.12.0 && nvm use 12.12.0
           cd bindings/pydeck
-          make setup-env
-          make init
+          pip install -r requirements-dev.txt
+          nvm install 10.16.0
+          nvm use 10.16.0
+          pip install -e . --install-option "--build_all"
+          pip install -e . --install-option "--build_all" --verbose
 
       - name: Run tests
         run: |
-          cd bindings/pydeck
-          make test
+          pytest --cov=pydeck
 
   armv64_job:
     name: Build and Test for arm64
