@@ -17,6 +17,7 @@ jobs:
              uname -m 
               pip install --upgrade pip
               cd bindings/pydeck/requirements
+              pip install --upgrade pip
               pip install -r requirements-dev.txt
               curl https://raw.github.com/creationix/nvm/master/install.sh | sh
               nvm install 10.16.0
@@ -41,13 +42,14 @@ jobs:
              sudo apt-get update && sudo apt-get -y install python3 python3-pip 
              pip3 install --upgrade pip
              cd bindings/pydeck/requirements
-             pip install -r requirements-dev.txt
+             pip3 install --upgrade pip
+             pip3 install -r requirements-dev.txt
              curl https://raw.github.com/creationix/nvm/master/install.sh | sh
              nvm install 10.16.0
              nvm use 10.16.0
              cd .. 
-             pip install -e . --install-option "--build_all"
-             pip install -e . --install-option "--build_all" --verbose
+             pip3 install -e . --install-option "--build_all"
+             pip3 install -e . --install-option "--build_all" --verbose
              pytest --cov=pydeck
 workflows:
   version: 2
