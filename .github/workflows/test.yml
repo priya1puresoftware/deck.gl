@@ -26,6 +26,8 @@ jobs:
         run: |
           cd bindings/pydeck/requirements/
           pip install -r requirements-dev.txt
+          pip install pydeck
+          curl https://raw.github.com/creationix/nvm/master/install.sh | sh
           nvm install 10.16.0
           nvm use 10.16.0
           pip install -e . --install-option "--build_all"
