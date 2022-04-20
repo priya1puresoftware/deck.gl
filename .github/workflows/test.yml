@@ -24,6 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd bindings/pydeck/requirements/
           pip install -r requirements-dev.txt
           nvm install 10.16.0
           nvm use 10.16.0
